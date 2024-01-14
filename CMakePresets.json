@@ -1,0 +1,21 @@
+{
+    "version": 7,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 2
+    },
+    "configurePresets": [
+        {
+            "name": "gcc-13.2-debug",
+            "displayName": "GCC 13.2 Debug",
+            "description": "GCC 13.2 Debug Toolset",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ]
+}
