@@ -6,32 +6,51 @@
     },
     "configurePresets": [
         {
-            "name": "gcc-13.2",
+            "name": "ninja",
             "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build-${presetName}",
+            "binaryDir": "${sourceDir}/build-${presetName}"
+        },
+        {
+            "name": "gcc",
+            "hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++"
             }
         },
         {
-            "name": "gcc-13.2-debug",
-            "inherits": "gcc-13.2",
-            "displayName": "GCC 13.2 Debug",
-            "description": "GCC 13.2 Debug",
+            "name": "debug",
+            "hidden": true,
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
-            "name": "gcc-13.2-release",
-            "inherits": "gcc-13.2",
-            "displayName": "GCC 13.2 Release",
-            "description": "GCC 13.2 Release",
+            "name": "release",
+            "hidden": true,
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
+        },
+        {
+            "name": "gcc-debug",
+            "inherits": [
+                "ninja",
+                "gcc",
+                "debug"
+            ],
+            "displayName": "GCC Debug"
+        },
+        {
+            "name": "gcc-release",
+            "inherits": [
+                "ninja",
+                "gcc",
+                "release"
+            ],
+            "displayName": "GCC Release",
+            "description": "GCC Release"
         }
     ]
 }
