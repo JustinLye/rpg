@@ -41,13 +41,21 @@
             }
         },
         {
+            "name": "ubsan",
+            "hidden": true,
+            "environment": {
+                "CMAKE_ENV": "UBSAN"
+            }
+        },
+        {
             "name": "gcc-debug",
             "inherits": [
                 "ninja",
                 "gcc",
                 "debug"
             ],
-            "displayName": "GCC Debug"
+            "displayName": "GCC Debug",
+            "description": "GCC Debug"
         },
         {
             "name": "gcc-debug-asan",
@@ -55,7 +63,17 @@
                 "gcc-debug",
                 "asan"
             ],
-            "displayName": "GCC Debug ASAN"
+            "displayName": "GCC Debug ASAN",
+            "description": "GCC Debug ASAN"
+        },
+        {
+            "name": "gcc-debug-ubsan",
+            "inherits": [
+                "gcc-debug",
+                "ubsan"
+            ],
+            "displayName": "GCC Debug UBSAN",
+            "description": "GCC Debug UBSAN"
         },
         {
             "name": "gcc-release",
@@ -75,6 +93,15 @@
             ],
             "displayName": "GCC Release ASAN",
             "description": "GCC Release ASAN"
+        },
+        {
+            "name": "gcc-release-ubsan",
+            "inherits": [
+                "gcc-release",
+                "ubsan"
+            ],
+            "displayName": "GCC Release UBSAN",
+            "description": "GCC Release UBSAN"
         }
     ]
 }
