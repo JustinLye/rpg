@@ -14,7 +14,12 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-add_compile_options("-Wall" "-Wextra" "-Wpedantic" "-Werror")
+add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+
+if("$ENV{CMAKE_ENV}" STREQUAL "ASAN")
+  add_compile_options("-fsanitize=address")
+  add_link_options("-fsanitize=address")
+endif()
 
 add_subdirectory(apps)
 

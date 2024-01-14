@@ -34,6 +34,13 @@
             }
         },
         {
+            "name": "asan",
+            "hidden": true,
+            "environment": {
+                "CMAKE_ENV": "ASAN"
+            }
+        },
+        {
             "name": "gcc-debug",
             "inherits": [
                 "ninja",
@@ -41,6 +48,14 @@
                 "debug"
             ],
             "displayName": "GCC Debug"
+        },
+        {
+            "name": "gcc-debug-asan",
+            "inherits": [
+                "gcc-debug",
+                "asan"
+            ],
+            "displayName": "GCC Debug ASAN"
         },
         {
             "name": "gcc-release",
@@ -51,6 +66,15 @@
             ],
             "displayName": "GCC Release",
             "description": "GCC Release"
+        },
+        {
+            "name": "gcc-release-asan",
+            "inherits": [
+                "gcc-release",
+                "asan"
+            ],
+            "displayName": "GCC Release ASAN",
+            "description": "GCC Release ASAN"
         }
     ]
 }
