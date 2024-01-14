@@ -24,5 +24,11 @@ CheckOptions:
   modernize-loop-convert.NamingStyle: CamelCase
   llvm-else-after-return.WarnOnUnfixable: 'false'
   google-readability-function-size.StatementThreshold: '800'
+CompileFlags:
+  Remove:
+  - '-std=c++23'
+  - '-std=gnu++23'
+  Add:
+  - '-std=c++2b'
 ...
 
