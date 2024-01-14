@@ -16,5 +16,6 @@
     "cmake.configureOnOpen": false,
     "cmake.sourceDirectory": "${workspaceFolder}",
     "editor.renderWhitespace": "all",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "cmake.options.statusBarVisibility": "visible"
 }

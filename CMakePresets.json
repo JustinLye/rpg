@@ -6,15 +6,31 @@
     },
     "configurePresets": [
         {
-            "name": "gcc-13.2-debug",
-            "displayName": "GCC 13.2 Debug",
-            "description": "GCC 13.2 Debug Toolset",
+            "name": "gcc-13.2",
+            "hidden": true,
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build-${presetName}",
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "gcc",
-                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "gcc-13.2-debug",
+            "inherits": "gcc-13.2",
+            "displayName": "GCC 13.2 Debug",
+            "description": "GCC 13.2 Debug",
+            "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "gcc-13.2-release",
+            "inherits": "gcc-13.2",
+            "displayName": "GCC 13.2 Release",
+            "description": "GCC 13.2 Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
             }
         }
     ]
