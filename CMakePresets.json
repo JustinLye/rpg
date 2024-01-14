@@ -20,6 +20,14 @@
             }
         },
         {
+            "name": "clang",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++"
+            }
+        },
+        {
             "name": "debug",
             "hidden": true,
             "cacheVariables": {
@@ -102,6 +110,62 @@
             ],
             "displayName": "GCC Release UBSAN",
             "description": "GCC Release UBSAN"
+        },
+        {
+            "name": "clang-debug",
+            "inherits": [
+                "ninja",
+                "clang",
+                "debug"
+            ],
+            "displayName": "Clang Debug",
+            "description": "Clang Debug"
+        },
+        {
+            "name": "clang-debug-asan",
+            "inherits": [
+                "clang-debug",
+                "asan"
+            ],
+            "displayName": "Clang Debug ASAN",
+            "description": "Clang Debug ASAN"
+        },
+        {
+            "name": "clang-debug-ubsan",
+            "inherits": [
+                "clang-debug",
+                "ubsan"
+            ],
+            "displayName": "Clang Debug UBSAN",
+            "description": "Clang Debug UBSAN"
+        },
+        {
+            "name": "clang-release",
+            "inherits": [
+                "ninja",
+                "clang",
+                "release"
+            ],
+            "displayName": "Clang Release",
+            "description": "Clang Release"
+        },
+        {
+            "name": "clang-release-asan",
+            "inherits": [
+                "clang-release",
+                "asan"
+            ],
+            "displayName": "Clang Release ASAN",
+            "description": "Clang Release ASAN"
+        },
+        {
+            "name": "clang-release-ubsan",
+            "inherits": [
+                "clang-release",
+                "ubsan"
+            ],
+            "displayName": "Clang Release UBSAN",
+            "description": "Clang Release UBSAN"
         }
     ]
 }
