@@ -49,6 +49,14 @@
             }
         },
         {
+            "name": "san",
+            "hidden": true,
+            "inherits": [
+                "ubsan",
+                "asan"
+            ]
+        },
+        {
             "name": "ubsan",
             "hidden": true,
             "environment": {
@@ -84,6 +92,15 @@
             "description": "GCC Debug UBSAN"
         },
         {
+            "name": "gcc-debug-san",
+            "inherits": [
+                "gcc-debug",
+                "san"
+            ],
+            "displayName": "GCC Debug SAN",
+            "description": "GCC Debug SAN"
+        },
+        {
             "name": "gcc-release",
             "inherits": [
                 "ninja",
@@ -110,6 +127,15 @@
             ],
             "displayName": "GCC Release UBSAN",
             "description": "GCC Release UBSAN"
+        },
+        {
+            "name": "gcc-release-san",
+            "inherits": [
+                "gcc-release",
+                "san"
+            ],
+            "displayName": "GCC Release SAN",
+            "description": "GCC Release SAN"
         },
         {
             "name": "clang-debug",
@@ -140,6 +166,15 @@
             "description": "Clang Debug UBSAN"
         },
         {
+            "name": "clang-debug-san",
+            "inherits": [
+                "clang-debug",
+                "san"
+            ],
+            "displayName": "Clang Debug SAN",
+            "description": "Clang Debug SAN"
+        },
+        {
             "name": "clang-release",
             "inherits": [
                 "ninja",
@@ -166,6 +201,15 @@
             ],
             "displayName": "Clang Release UBSAN",
             "description": "Clang Release UBSAN"
+        },
+        {
+            "name": "clang-release-san",
+            "inherits": [
+                "clang-release",
+                "san"
+            ],
+            "displayName": "Clang Release SAN",
+            "description": "Clang Release SAN"
         }
     ]
 }
