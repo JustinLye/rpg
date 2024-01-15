@@ -45,14 +45,14 @@
             "name": "asan",
             "hidden": true,
             "environment": {
-                "CMAKE_ENV": "ASAN"
+                "RPG_GAME_ASAN": "ON"
             }
         },
         {
             "name": "ubsan",
             "hidden": true,
             "environment": {
-                "CMAKE_ENV": "UBSAN"
+                "RPG_GAME_UBSAN": "ON"
             }
         },
         {

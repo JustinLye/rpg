@@ -16,9 +16,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
-if("$ENV{CMAKE_ENV}" STREQUAL "ASAN")
+if("$ENV{RPG_GAME_ASAN}" STREQUAL "ON")
   add_compile_options("-fsanitize=address")
   add_link_options("-fsanitize=address")
+endif()
+
+if("$ENV{RPG_GAME_UBSAN}" STREQUAL "ON")
+  add_compile_options("-fsanitize=undefined")
+  add_link_options("-fsanitize=undefined")
 endif()
 
 add_subdirectory(apps)
