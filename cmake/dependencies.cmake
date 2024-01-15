@@ -26,4 +26,12 @@ set(IMGUI_SFML_IMGUI_DEMO ON)
 
 FetchContent_MakeAvailable(imgui-sfml)
 
+FetchContent_Declare(
+    docopt
+    GIT_REPOSITORY https://github.com/docopt/docopt.cpp
+    GIT_TAG v0.6.2
+)
+
+FetchContent_MakeAvailable(docopt)
+
 
