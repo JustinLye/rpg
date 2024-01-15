@@ -10,13 +10,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(dependencies)
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
-set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_CXX_CPPCHECK "cppcheck;--suppress=preprocessorErrorDirective:${CMAKE_BINARY_DIR}/_deps/sfml-src/include/SFML/Config.hpp")
+set(CMAKE_CXX_CPPCHECK
+    "cppcheck;--suppress=preprocessorErrorDirective:${CMAKE_BINARY_DIR}/_deps/sfml-src/include/SFML/Config.hpp"
+)
 set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "include-what-you-use")
 
-add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror -std=gnu++2b)
 
 if("$ENV{RPG_GAME_ASAN}" STREQUAL "ON")
   add_compile_options("-fsanitize=address")
@@ -26,6 +27,10 @@ endif()
 if("$ENV{RPG_GAME_UBSAN}" STREQUAL "ON")
   add_compile_options("-fsanitize=undefined")
   add_link_options("-fsanitize=undefined")
+endif()
+
+if("$ENV{RPG_DEBUG}" STREQUAL "ON")
+  add_compile_definitions(RPG_DEBUG=1)
 endif()
 
 add_subdirectory(apps)

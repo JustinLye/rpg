@@ -32,6 +32,9 @@
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "environment": {
+                "RPG_DEBUG": "ON"
             }
         },
         {

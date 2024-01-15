@@ -101,10 +101,8 @@ IfMacros:
   - KJ_IF_MAYBE
 IncludeBlocks:   Regroup
 IncludeCategories:
-  - Regex:           '^<SFML/'
-    Priority:        5
-  - Regex:           '^<imgui*'
-    Priority:        10
+  - Regex:           '^<(SFML/|imgui|spdlog/|docopt)'
+    Priority:        0
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false
 IndentCaseBlocks: false
