@@ -33,3 +33,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(docopt)
 
 find_package(spdlog REQUIRED)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest
+  GIT_TAG v1.14.x)
+
+FetchContent_MakeAvailable(googletest)

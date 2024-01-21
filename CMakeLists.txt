@@ -33,6 +33,8 @@ if("$ENV{RPG_DEBUG}" STREQUAL "ON")
   add_compile_definitions(RPG_DEBUG=1)
 endif()
 
+add_subdirectory(lib)
+add_subdirectory(test)
 add_subdirectory(apps)
 
 file(CREATE_LINK "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}/build" SYMBOLIC)
