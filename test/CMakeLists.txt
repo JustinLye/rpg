@@ -1,0 +1,5 @@
+add_library(rpgtestlib INTERFACE)
+target_include_directories(rpgtestlib INTERFACE include)
+target_link_libraries(rpgtestlib INTERFACE GTest::gmock rpg::lib)
+add_library(rpg::test::lib ALIAS rpgtestlib)
+add_subdirectory(unit)
