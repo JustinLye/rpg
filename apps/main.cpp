@@ -1,3 +1,5 @@
+#include <rpg/controllers/movement.hpp>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Transformable.hpp>
@@ -10,10 +12,8 @@
 
 #include <cmath>
 #include <cstdint>
-#include <functional>
 #include <map>
 #include <numbers>
-#include <optional>
 #include <string>
 
 using movement_speed_t = float;
@@ -97,82 +97,21 @@ static constexpr auto usage = R"(
 }
 
 inline namespace detail {
-struct speeds {
-  movement_speed_t frontal{base_frontal_movement_speed};
-  movement_speed_t lateral;
-  movement_speed_t boost;
+struct input {
+  [[nodiscard]] auto
+  is_key_pressed(const sf::Keyboard::Key key) const noexcept {
+    return sf::Keyboard::isKeyPressed(key);
+  }
 };
 
-class speed_controller {
-  detail::speeds speeds;
+struct speed {
+  [[nodiscard]] float frontal_movement() const noexcept { return 500.0f; }
 
-public:
-  inline auto update(const auto &delta_time) {
-#if defined(RPG_DEBUG)
-    ImGui::Begin("Speed Dialog");
-    ImGui::InputFloat("Base Frontal Movement Speed",
-                      &base_frontal_movement_speed);
-    ImGui::InputFloat("Base Lateral Movement Speed",
-                      &base_lateral_movement_speed);
-    ImGui::InputFloat("Movement Speed Boost", &movement_speed_boost);
-    ImGui::End();
-#endif
-    speeds.boost = movement_speed_boost * delta_time.asSeconds();
-    speeds.frontal = base_frontal_movement_speed * speeds.boost;
-    speeds.lateral = base_lateral_movement_speed * speeds.boost;
-  }
+  [[nodiscard]] float backward_movement() const noexcept { return 250.0f; }
 
-  [[nodiscard]] inline auto frontal() const noexcept { return speeds.frontal; }
+  [[nodiscard]] float lateral_movement() const noexcept { return 150.0f; }
 
-  [[nodiscard]] inline auto lateral() const noexcept { return speeds.lateral; }
-};
-
-class movement_controller {
-  detail::speed_controller speed_controller;
-  sf::Vector2f direction{1.0f, 0.0f};
-  std::optional<std::reference_wrapper<sf::Transformable>> optional_sprite;
-
-public:
-  inline auto attach(auto &transformable) {
-    optional_sprite.emplace(std::ref(transformable));
-  }
-
-  inline auto update(const auto &delta_time) {
-    if (not optional_sprite) {
-      return;
-    }
-
-    speed_controller.update(delta_time);
-
-    const auto delta_time_as_seconds = delta_time.asSeconds();
-    auto &sprite = (*optional_sprite).get();
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) {
-      sprite.rotate(250.0f * delta_time_as_seconds);
-      direction = rotate_vector(sprite.getRotation());
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) {
-      sprite.rotate(-250.0f * delta_time_as_seconds);
-      direction = rotate_vector(sprite.getRotation());
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-      sprite.move(ortho(direction) * speed_controller.lateral());
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-      sprite.move(ortho(direction) * -speed_controller.lateral());
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-      sprite.move(direction * speed_controller.frontal());
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-      sprite.move(direction * -speed_controller.frontal());
-    }
-  }
+  [[nodiscard]] float rotational_movement() const noexcept { return 250.0f; }
 };
 
 } // namespace detail
@@ -201,7 +140,10 @@ int main(int argc, char **argv) {
   spdlog::info(std::format("origin is {}, {}", sprite.getOrigin().x,
                            sprite.getOrigin().y));
 
-  detail::movement_controller movement_controller;
+  // detail::movement_controller movement_controller;
+  detail::input input{};
+  detail::speed speed{};
+  rpg::controllers::movement movement_controller{input, speed};
   movement_controller.attach(sprite);
 
   while (window.isOpen()) {
