@@ -39,6 +39,9 @@ public:
   }
 
   auto update(const auto &delta_time) {
+    if (not transformable_) {
+      return;
+    }
     auto &transformable = (*transformable_).get();
     auto &input = input_.get();
     auto &speed = speed_.get();

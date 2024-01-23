@@ -12,7 +12,7 @@
 
 class controllers_movement : public testing::Test {
 protected:
-  rpg::test::mocks::input test_input{};
+  ::testing::StrictMock<rpg::test::mocks::input> test_input{};
   rpg::test::mocks::speed test_speed{};
   rpg::controllers::movement<rpg::test::mocks::input, rpg::test::mocks::speed>
       movement_controller{test_input, test_speed};
@@ -670,4 +670,34 @@ TEST_F(controllers_movement, move_lateral_left_accounts_for_orientation) {
   EXPECT_EQ(270.0f, transformable.getRotation());
   EXPECT_EQ(-1.0f, transformable.getPosition().x);
   rpg::test::comparision::expect_equal(0.0f, transformable.getPosition().y);
+}
+
+TEST_F(
+    controllers_movement,
+    should_not_make_any_calls_when_calling_update_on_detached_movement_controller) {
+
+  EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
+      .Times(1)
+      .WillOnce(::testing::Return(false));
+  EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
+      .Times(1)
+      .WillOnce(::testing::Return(false));
+  EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
+      .Times(1)
+      .WillOnce(::testing::Return(false));
+  EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
+      .Times(1)
+      .WillOnce(::testing::Return(false));
+  EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
+      .Times(1)
+      .WillOnce(::testing::Return(false));
+  EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
+      .Times(1)
+      .WillOnce(::testing::Return(false));
+
+  movement_controller.attach(transformable);
+  const auto delta_time = sf::seconds(1.0f);
+  movement_controller.update(delta_time);
+  movement_controller.detach();
+  movement_controller.update(delta_time);
 }
