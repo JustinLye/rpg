@@ -10,27 +10,9 @@
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
-#include <cmath>
 #include <cstdint>
 #include <map>
-#include <numbers>
 #include <string>
-
-using movement_speed_t = float;
-#if defined(RPG_DEBUG)
-movement_speed_t base_frontal_movement_speed = 500.0f;
-movement_speed_t base_lateral_movement_speed = 150.0f;
-movement_speed_t movement_speed_boost = 1.0f;
-#elif defined(BASE_FRONTAL_MOVEMENT_SPEED)
-constexpr movement_speed_t base_frontal_movement_speed =
-    BASE_FRONTAL_MOVEMENT_SPEED;
-constexpr auto base_lateral_movement_speed = 150.0f;
-auto movement_speed_boost = 1.0f;
-#else
-constexpr movement_speed_t base_frontal_movement_speed = 500.0f;
-constexpr auto base_lateral_movement_speed = 150.0f;
-auto movement_speed_boost = 1.0f;
-#endif
 
 struct cli_args {
   std::uint32_t width;
@@ -38,28 +20,6 @@ struct cli_args {
   double scale;
   std::uint32_t frame_limit;
 };
-
-constexpr auto _180_over_pi = 180.0 / std::numbers::pi_v<double>;
-
-[[nodiscard]] inline auto degrees_to_radians(const auto degrees) {
-  return degrees * std::numbers::pi_v<double> / 180.0;
-}
-
-[[nodiscard]] inline auto radians_to_degrees(const auto radians) {
-  return radians * _180_over_pi;
-}
-
-[[nodiscard]] inline auto rotate_vector(const auto degrees) -> sf::Vector2f {
-  const auto radians = static_cast<float>(degrees_to_radians(degrees));
-  return {std::cos(radians), std::sin(radians)};
-}
-
-[[nodiscard]] inline auto ortho(const auto &vector) {
-  auto result = vector;
-  result.x = -vector.y;
-  result.y = vector.x;
-  return result;
-}
 
 static constexpr auto usage = R"(
   RPG Game
@@ -140,7 +100,6 @@ int main(int argc, char **argv) {
   spdlog::info(std::format("origin is {}, {}", sprite.getOrigin().x,
                            sprite.getOrigin().y));
 
-  // detail::movement_controller movement_controller;
   detail::input input{};
   detail::speed speed{};
   rpg::controllers::movement movement_controller{input, speed};
