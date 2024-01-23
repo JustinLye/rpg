@@ -103,7 +103,7 @@ IncludeBlocks:   Regroup
 IncludeCategories:
   - Regex:           '^<rpg/'
     Priority:        0
-  - Regex:           '^<(SFML/|imgui|spdlog/|docopt)'
+  - Regex:           '^<(SFML/|imgui|spdlog/|docopt|boost/)'
     Priority:        1
   - Regex:           '^<gtest/|gmock/'
     Priority:        2

@@ -40,3 +40,5 @@ FetchContent_Declare(
   GIT_TAG v1.14.x)
 
 FetchContent_MakeAvailable(googletest)
+
+find_package(Boost 1.81.0 REQUIRED)
