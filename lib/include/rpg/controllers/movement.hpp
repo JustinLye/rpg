@@ -82,22 +82,28 @@ public:
     }
 
 #if defined(RPG_DEBUG) and not defined(RPG_TESTING)
-    ImGui::Begin("direction");
+    ImGui::Begin("Movement");
+
+    const auto text =
+        std::format("direction is ({}, {})", direction_.x, direction_.y);
+    ImGui::TextUnformatted(text.c_str());
+
+    float rotation = transformable.getRotation();
+    ImGui::InputFloat("Rotation", &rotation);
+    transformable.setRotation(rotation);
+    direction_ = math::rotate_vector(transformable.getRotation());
+
     {
-      const auto text =
-          std::format("direction is ({}, {})", direction_.x, direction_.y);
-      ImGui::TextUnformatted(text.c_str());
+      float vector[] = {transformable.getPosition().x,
+                        transformable.getPosition().y};
+      ImGui::InputFloat2("Position", vector);
+      transformable.setPosition(vector[0], vector[1]);
     }
+
     {
-      const auto text =
-          std::format("rotation is {}", transformable.getRotation());
-      ImGui::TextUnformatted(text.c_str());
-    }
-    {
-      const auto text =
-          std::format("position is ({}, {})", transformable.getPosition().x,
-                      transformable.getPosition().y);
-      ImGui::TextUnformatted(text.c_str());
+      float vector[] = {transformable.getScale().x, transformable.getScale().y};
+      ImGui::InputFloat2("Scale", vector);
+      transformable.setScale(vector[0], vector[1]);
     }
 
     ImGui::End();
