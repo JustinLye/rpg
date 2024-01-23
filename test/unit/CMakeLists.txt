@@ -9,3 +9,4 @@ add_custom_target(run_scheduled_action_test $<TARGET_FILE:scheduled_action>
                                             --gtest_color=yes)
 
 add_subdirectory(controllers)
+add_subdirectory(window)
