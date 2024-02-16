@@ -3,6 +3,8 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <cmath>
+#include <concepts>
+#include <limits>
 #include <numbers>
 
 namespace rpg::inline math {
@@ -16,9 +18,15 @@ constexpr auto _180_over_pi = 180.0 / std::numbers::pi_v<double>;
   return radians * _180_over_pi;
 }
 
+[[nodiscard]] inline auto snap_to_zero(const std::floating_point auto value)
+    -> float {
+  return ((fabs(value) <= std::numeric_limits<float>::epsilon()) ? 0.0f
+                                                                 : value);
+}
+
 [[nodiscard]] inline auto rotate_vector(const auto degrees) -> sf::Vector2f {
   const auto radians = static_cast<float>(degrees_to_radians(degrees));
-  return {std::cos(radians), std::sin(radians)};
+  return {snap_to_zero(std::cos(radians)), snap_to_zero(std::sin(radians))};
 }
 
 [[nodiscard]] inline auto ortho(const auto &vector) {

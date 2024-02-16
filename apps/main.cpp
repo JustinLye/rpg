@@ -1,4 +1,7 @@
+#include <rpg/action.hpp>
 #include <rpg/controllers/movement.hpp>
+#include <rpg/window/input.hpp>
+#include <rpg/window/keyboard_input.hpp>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -57,12 +60,6 @@ static constexpr auto usage = R"(
 }
 
 inline namespace detail {
-struct input {
-  [[nodiscard]] auto
-  is_key_pressed(const sf::Keyboard::Key key) const noexcept {
-    return sf::Keyboard::isKeyPressed(key);
-  }
-};
 
 struct speed {
   [[nodiscard]] float frontal_movement() const noexcept { return 500.0f; }
@@ -100,10 +97,21 @@ int main(int argc, char **argv) {
   spdlog::info(std::format("origin is {}, {}", sprite.getOrigin().x,
                            sprite.getOrigin().y));
 
-  detail::input input{};
+  rpg::window::keyboard_input keyboard_input{};
+  rpg::window::input input{keyboard_input};
   detail::speed speed{};
   rpg::controllers::movement movement_controller{input, speed};
   movement_controller.attach(sprite);
+  movement_controller.map_action(rpg::action::move_forward,
+                                 sf::Keyboard::Key::W);
+  movement_controller.map_action(rpg::action::move_backward,
+                                 sf::Keyboard::Key::S);
+  movement_controller.map_action(rpg::action::move_left, sf::Keyboard::Key::A);
+  movement_controller.map_action(rpg::action::move_right, sf::Keyboard::Key::D);
+  movement_controller.map_action(rpg::action::rotate_right,
+                                 sf::Keyboard::Key::E);
+  movement_controller.map_action(rpg::action::rotate_left,
+                                 sf::Keyboard::Key::Q);
 
   while (window.isOpen()) {
     sf::Event event;
@@ -117,6 +125,7 @@ int main(int argc, char **argv) {
       }
     }
     ImGui::SFML::Update(window, delta_time);
+    input.update(delta_time);
     movement_controller.update(delta_time);
 
     window.clear();

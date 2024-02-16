@@ -22,9 +22,8 @@ auto expect_equal(const T lhs, const U rhs) {
   }
   const auto value = std::fabs(static_cast<U>(lhs) - rhs);
   const auto epsilon =
-      std::numeric_limits<U>::epsilon() * std::fabs(lhs) >= std::fabs(rhs)
-          ? std::fabs(lhs)
-          : std::fabs(rhs);
+      std::numeric_limits<U>::epsilon() *
+      (std::fabs(lhs) >= std::fabs(rhs) ? std::fabs(lhs) : std::fabs(rhs));
   EXPECT_TRUE(value <= epsilon)
       << std::setprecision(16) << "lhs: " << lhs << " rhs: " << rhs
       << " diff: " << value << " epsilon: " << epsilon;

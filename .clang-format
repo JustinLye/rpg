@@ -101,12 +101,14 @@ IfMacros:
   - KJ_IF_MAYBE
 IncludeBlocks:   Regroup
 IncludeCategories:
+  - Regex:           '^<rpg/test'
+    Priority:        1
   - Regex:           '^<rpg/'
     Priority:        0
   - Regex:           '^<(SFML/|imgui|spdlog/|docopt|boost/)'
-    Priority:        1
-  - Regex:           '^<gtest/|gmock/'
     Priority:        2
+  - Regex:           '^<gtest/|gmock/'
+    Priority:        3
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false
 IndentCaseBlocks: false

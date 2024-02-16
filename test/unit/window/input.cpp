@@ -1,6 +1,8 @@
-#include <rpg/test/mocks/input.hpp>
 #include <rpg/window/input.hpp>
 #include <rpg/window/key_position.hpp>
+#include <rpg/window/key_state.hpp>
+
+#include <rpg/test/mocks/keyboard_input.hpp>
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -8,7 +10,8 @@
 #include <gtest/gtest.h>
 
 TEST(window_input, key_state_is_pressed_the_first_time_its_pressed) {
-  rpg::test::mocks::input input{};
+  rpg::test::mocks::keyboard_input input{};
+
   EXPECT_CALL(input, is_key_pressed(sf::Keyboard::Key::A))
       .Times(1)
       .WillOnce(::testing::Return(true));
@@ -23,7 +26,7 @@ TEST(window_input, key_state_is_pressed_the_first_time_its_pressed) {
 
 TEST(window_input,
      key_state_is_down_after_key_is_pressed_on_subsequent_updates) {
-  rpg::test::mocks::input input{};
+  rpg::test::mocks::keyboard_input input{};
   EXPECT_CALL(input, is_key_pressed(sf::Keyboard::Key::A))
       .Times(2)
       .WillRepeatedly(::testing::Return(true));
@@ -38,7 +41,7 @@ TEST(window_input,
 
 TEST(window_input,
      is_released_when_not_pressed_on_update_immediately_after_it_was_pressed) {
-  rpg::test::mocks::input input{};
+  rpg::test::mocks::keyboard_input input{};
   EXPECT_CALL(input, is_key_pressed(sf::Keyboard::Key::A))
       .Times(2)
       .WillOnce(::testing::Return(true))
@@ -53,7 +56,7 @@ TEST(window_input,
 }
 
 TEST(window_input, is_up_following_release) {
-  rpg::test::mocks::input input{};
+  rpg::test::mocks::keyboard_input input{};
   EXPECT_CALL(input, is_key_pressed(sf::Keyboard::Key::A))
       .Times(3)
       .WillOnce(::testing::Return(true))
@@ -70,7 +73,7 @@ TEST(window_input, is_up_following_release) {
 }
 
 TEST(window_input, position_remains_down) {
-  rpg::test::mocks::input input{};
+  rpg::test::mocks::keyboard_input input{};
   EXPECT_CALL(input, is_key_pressed(sf::Keyboard::Key::A))
       .Times(3)
       .WillRepeatedly(::testing::Return(true));
@@ -89,7 +92,7 @@ TEST(window_input, position_remains_down) {
 }
 
 TEST(window_input, position_remains_up) {
-  rpg::test::mocks::input input{};
+  rpg::test::mocks::keyboard_input input{};
   EXPECT_CALL(input, is_key_pressed(sf::Keyboard::Key::A))
       .Times(3)
       .WillOnce(::testing::Return(true))
@@ -109,7 +112,7 @@ TEST(window_input, position_remains_up) {
 }
 
 TEST(window_input, track_time_in_state) {
-  rpg::test::mocks::input input{};
+  rpg::test::mocks::keyboard_input input{};
   EXPECT_CALL(input, is_key_pressed(sf::Keyboard::Key::A))
       .Times(8)
       .WillOnce(::testing::Return(true))
