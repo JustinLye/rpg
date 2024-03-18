@@ -55,26 +55,21 @@ public:
     input.subscribe(key);
   }
 
+  auto clear_action(const rpg::action action) {
+    if (const auto iter = action_map_.find(action);
+        iter != std::end(action_map_)) {
+      auto &input = input_.get();
+      input.unsubscribe(iter->second);
+      action_map_.erase(iter);
+    }
+  }
+
   auto update(const auto &delta_time) {
     if (not transformable_) {
       return;
     }
     auto &transformable = (*transformable_).get();
     auto &speed = speed_.get();
-
-    bool lateral_movement_performed = false;
-
-    if (should_do_action(action::move_right)) {
-      transformable.move(math::ortho(direction_) * speed.lateral_movement() *
-                         delta_time.asSeconds());
-      lateral_movement_performed = true;
-    }
-
-    if (should_do_action(action::move_left)) {
-      transformable.move(math::ortho(direction_) * -speed.lateral_movement() *
-                         delta_time.asSeconds());
-      lateral_movement_performed = true;
-    }
 
     if (should_do_action(action::rotate_right)) {
       transformable.rotate(speed.rotational_movement() *
@@ -86,6 +81,24 @@ public:
       transformable.rotate(-speed.rotational_movement() *
                            delta_time.asSeconds());
       direction_ = math::rotate_vector(transformable.getRotation());
+    }
+
+    bool lateral_movement_performed = false;
+
+    if (should_do_action(action::move_right)) {
+      const auto movement_speed =
+          direction_.y <= std::numeric_limits<float>::epsilon()
+              ? speed.lateral_movement()
+              : -speed.lateral_movement();
+      transformable.move(math::ortho(direction_) * movement_speed *
+                         delta_time.asSeconds());
+      lateral_movement_performed = true;
+    }
+
+    if (should_do_action(action::move_left)) {
+      transformable.move(math::ortho(direction_) * -speed.lateral_movement() *
+                         delta_time.asSeconds());
+      lateral_movement_performed = true;
     }
 
     if (not lateral_movement_performed and

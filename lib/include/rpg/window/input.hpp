@@ -57,6 +57,10 @@ public:
     std::ignore = key_states_.insert({key, {}});
   }
 
+  inline void unsubscribe(const auto key) {
+    std::ignore = key_states_.erase(key);
+  }
+
   inline void subscribe(const auto... keys) { (subscribe(keys), ...); }
 
   inline void update(const auto delta_time) {

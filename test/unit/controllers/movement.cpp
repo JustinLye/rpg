@@ -284,279 +284,53 @@ TEST_F(controllers_movement, rotate_left) {
   EXPECT_EQ(-85.0f, transformable.getPosition().y);
 }
 
-// TEST_F(controllers_movement, rotate_left) {
-//   EXPECT_CALL(test_speed, rotational_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(1.0f);
-//   movement_controller.update(delta_time);
-//   EXPECT_EQ(359.0f, transformable.getRotation());
-// }
-
-// TEST_F(controllers_movement, rotate_left_vary_speed) {
-//   EXPECT_CALL(test_speed, rotational_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(2.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(1.0f);
-//   movement_controller.update(delta_time);
-//   EXPECT_EQ(358.0f, transformable.getRotation());
-// }
-
-// TEST_F(controllers_movement, rotation_dictates_direction) {
-//   EXPECT_CALL(test_speed, rotational_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_speed, frontal_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(1.0f);
-//   movement_controller.update(delta_time);
-//   rpg::test::comparision::expect_equal(0.99984769502,
-//                                        transformable.getPosition().x);
-//   rpg::test::comparision::expect_equal(0.01745240576565266,
-//                                        transformable.getPosition().y);
-// }
-
-// TEST_F(controllers_movement, frontal_movement_accounts_for_delta_time) {
-//   EXPECT_CALL(test_speed, frontal_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(0.5f);
-//   movement_controller.update(delta_time);
-//   rpg::test::comparision::expect_equal(0.5f, transformable.getPosition().x);
-//   rpg::test::comparision::expect_equal(0.0f, transformable.getPosition().y);
-// }
-
-// TEST_F(controllers_movement, backward_movement_accounts_for_delta_time) {
-//   EXPECT_CALL(test_speed, backward_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(0.5f);
-//   movement_controller.update(delta_time);
-//   rpg::test::comparision::expect_equal(-0.5f, transformable.getPosition().x);
-//   rpg::test::comparision::expect_equal(0.0f, transformable.getPosition().y);
-// }
-
-// TEST_F(controllers_movement, lateral_movement_right_accounts_for_delta_time)
-// {
-//   EXPECT_CALL(test_speed, lateral_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(0.5f);
-//   movement_controller.update(delta_time);
-//   rpg::test::comparision::expect_equal(0.0f, transformable.getPosition().x);
-//   rpg::test::comparision::expect_equal(-0.5f, transformable.getPosition().y);
-// }
-
-// TEST_F(controllers_movement, lateral_movement_left_accounts_for_delta_time) {
-//   EXPECT_CALL(test_speed, lateral_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(0.5f);
-//   movement_controller.update(delta_time);
-//   rpg::test::comparision::expect_equal(0.0f, transformable.getPosition().x);
-//   rpg::test::comparision::expect_equal(0.5f, transformable.getPosition().y);
-// }
-
-// TEST_F(controllers_movement,
-//        rotational_movement_right_accounts_for_delta_time) {
-//   EXPECT_CALL(test_speed, rotational_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(0.5f);
-//   movement_controller.update(delta_time);
-//   rpg::test::comparision::expect_equal(0.5f, transformable.getRotation());
-// }
-
-// TEST_F(controllers_movement,
-// rotational_movement_left_accounts_for_delta_time) {
-//   EXPECT_CALL(test_speed, rotational_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(0.5f);
-//   movement_controller.update(delta_time);
-//   rpg::test::comparision::expect_equal(359.5f, transformable.getRotation());
-// }
+TEST_F(controllers_movement, lateral_movement_considers_orientation) {
+  rpg::window::key_state key_down{
+      .position = rpg::window::key_position::down,
+      .seconds_in_current_position = 0,
+  };
+  EXPECT_CALL(test_input, subscribe(sf::Keyboard::Key::Q)).Times(1);
+  EXPECT_CALL(test_input, subscribe(sf::Keyboard::Key::D)).Times(1);
+  EXPECT_CALL(test_input, subscribe(sf::Keyboard::Key::A)).Times(1);
+  EXPECT_CALL(test_input, unsubscribe(sf::Keyboard::Key::D)).Times(1);
+  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::Q))
+      .Times(4)
+      .WillRepeatedly(::testing::Return(key_down));
+  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::D))
+      .Times(3)
+      .WillRepeatedly(::testing::Return(key_down));
+  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::A))
+      .Times(1)
+      .WillRepeatedly(::testing::Return(key_down));
+  EXPECT_CALL(test_speed, rotational_movement())
+      .Times(4)
+      .WillRepeatedly(::testing::Return(90.0f));
+  EXPECT_CALL(test_speed, lateral_movement())
+      .Times(4)
+      .WillRepeatedly(::testing::Return(1.0f));
+  movement_controller.attach(transformable);
+  movement_controller.map_action(rpg::action::rotate_left,
+                                 sf::Keyboard::Key::Q);
+  movement_controller.map_action(rpg::action::move_right, sf::Keyboard::Key::D);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(270.0f, transformable.getRotation());
+  EXPECT_EQ(1.0f, transformable.getPosition().x);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(180.0f, transformable.getRotation());
+  EXPECT_EQ(1.0f, transformable.getPosition().x);
+  EXPECT_EQ(-1.0f, transformable.getPosition().y);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(90.0f, transformable.getRotation());
+  EXPECT_EQ(2.0f, transformable.getPosition().x);
+  EXPECT_EQ(-1.0f, transformable.getPosition().y);
+  movement_controller.clear_action(rpg::action::move_right);
+  movement_controller.map_action(rpg::action::move_left, sf::Keyboard::Key::A);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(0.0f, transformable.getRotation());
+  EXPECT_EQ(2.0f, transformable.getPosition().x);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
+}
 
 // TEST_F(controllers_movement, move_lateral_right_accounts_for_orientation) {
 //   EXPECT_CALL(test_speed, rotational_movement())
