@@ -7,3 +7,5 @@ target_compile_definitions(window_input_test PUBLIC RPG_TESTING)
 
 add_custom_target(run_window_input_test $<TARGET_FILE:window_input_test>
                                         --gtest_color=yes)
+
+add_dependencies(run_all_unit_tests run_window_input_test)

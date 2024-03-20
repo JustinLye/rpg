@@ -93,3 +93,12 @@ TEST(scheduled_action, resume_scheduled_actions) {
   action.update(delta_time);
   EXPECT_EQ(42, x);
 }
+
+#if defined(RPG_OS_IS_WINDOWS)
+
+int main(int argc, char** argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+#endif

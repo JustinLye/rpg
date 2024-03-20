@@ -32,7 +32,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(docopt)
 
-find_package(spdlog REQUIRED)
 
 FetchContent_Declare(
   googletest
@@ -41,4 +40,13 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
-find_package(Boost 1.81.0 REQUIRED)
+if (${RPG_OS_IS_WINDOWS})
+  find_package(spdlog CONFIG REQUIRED)
+  add_library(vcpkg_pkgs INTERFACE)
+  target_include_directories(vcpkg_pkgs INTERFACE "${CMAKE_SOURCE_DIR}/vcpkg_installed/x64-windows/include")
+  add_library(vcpkg::pkgs ALIAS vcpkg_pkgs)
+else()
+  find_package(spdlog REQUIRED)
+  find_package(Boost 1.81.0 REQUIRED)
+endif()
+

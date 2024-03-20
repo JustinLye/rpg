@@ -28,6 +28,21 @@
             }
         },
         {
+            "name": "msvc",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "cl",
+                "CMAKE_CXX_COMPILER": "cl"
+            }
+        },
+        {
+            "name": "vcpkg",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+            }
+        },
+        {
             "name": "debug",
             "hidden": true,
             "cacheVariables": {
@@ -213,6 +228,17 @@
             ],
             "displayName": "Clang Release SAN",
             "description": "Clang Release SAN"
+        },
+        {
+            "name": "msvc-debug",
+            "inherits": [
+                "ninja",
+                "vcpkg",
+                "msvc",
+                "debug"
+            ],
+            "displayName": "MSVC Debug",
+            "description": "MSVC Debug"
         }
     ]
 }

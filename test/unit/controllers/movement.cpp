@@ -430,3 +430,13 @@ TEST_F(controllers_movement, lateral_movement_considers_orientation) {
 //   movement_controller.detach();
 //   movement_controller.update(delta_time);
 // }
+
+
+#if defined(RPG_OS_IS_WINDOWS)
+
+int main(int argc, char** argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+#endif

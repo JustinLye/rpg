@@ -157,3 +157,12 @@ TEST(window_input, track_time_in_state) {
   EXPECT_EQ(0.5f, window_input.get_key_state(sf::Keyboard::Key::A)
                       .seconds_in_current_position);
 }
+
+#if defined(RPG_OS_IS_WINDOWS)
+
+int main(int argc, char** argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+#endif

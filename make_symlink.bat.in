@@ -1,0 +1,4 @@
+if exist build (
+    rmdir build
+)
+mklink /J build "@WINDOWS_BUILD_DIR_PATH@"
