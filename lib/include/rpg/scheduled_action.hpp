@@ -7,11 +7,11 @@
 
 namespace rpg {
 template <class T = decltype([] {})> class scheduled_action {
-  rpg::guid guid_;
-  float seconds_to_wait_;
-  std::optional<T> action_;
-  float seconds_elapsed_waiting_;
-  bool paused_;
+  rpg::guid guid_{};
+  float seconds_to_wait_{0.0};
+  std::optional<T> action_{};
+  float seconds_elapsed_waiting_{0.0};
+  bool paused_{false};
 
   auto should_update_() const noexcept {
     return action_.has_value() and not paused_;
@@ -41,7 +41,7 @@ public:
 
   void resume() { paused_ = false; }
 
-  void update(const auto delta_time) {
+  void update(const auto & delta_time) {
     if (not should_update_()) {
       return;
     }
