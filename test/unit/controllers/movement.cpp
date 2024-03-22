@@ -14,9 +14,10 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-class controllers_movement : public testing::Test {
+template <template <class> class TMock>
+class controllers_movement_impl : public testing::Test {
 protected:
-  ::testing::StrictMock<rpg::test::mocks::window_input> test_input{};
+  TMock<rpg::test::mocks::window_input> test_input{};
   rpg::test::mocks::speed test_speed{};
   rpg::controllers::movement<rpg::test::mocks::window_input,
                              rpg::test::mocks::speed>
@@ -24,22 +25,27 @@ protected:
   sf::Transformable transformable{};
 };
 
-TEST_F(controllers_movement, can_attach_transform) {
+using strick_controllers_movement =
+    controllers_movement_impl<testing::StrictMock>;
+
+using nice_controllers_movement = controllers_movement_impl<testing::NiceMock>;
+
+TEST_F(strick_controllers_movement, can_attach_transform) {
   movement_controller.attach(transformable);
   EXPECT_TRUE(movement_controller.is_attached());
 }
 
-TEST_F(controllers_movement, is_not_attached_before_attach_is_called) {
+TEST_F(strick_controllers_movement, is_not_attached_before_attach_is_called) {
   EXPECT_FALSE(movement_controller.is_attached());
 }
 
-TEST_F(controllers_movement, can_detach) {
+TEST_F(strick_controllers_movement, can_detach) {
   movement_controller.attach(transformable);
   movement_controller.detach();
   EXPECT_FALSE(movement_controller.is_attached());
 }
 
-TEST_F(controllers_movement, can_move_forward) {
+TEST_F(strick_controllers_movement, can_move_forward) {
   rpg::window::key_state key_state{
       .position = rpg::window::key_position::pressed,
       .seconds_in_current_position = 0,
@@ -68,7 +74,7 @@ TEST_F(controllers_movement, can_move_forward) {
   EXPECT_EQ(0.0, transformable.getPosition().y);
 }
 
-TEST_F(controllers_movement, can_move_backward) {
+TEST_F(strick_controllers_movement, can_move_backward) {
   rpg::window::key_state key_state{
       .position = rpg::window::key_position::pressed,
       .seconds_in_current_position = 0,
@@ -96,7 +102,7 @@ TEST_F(controllers_movement, can_move_backward) {
   EXPECT_EQ(0.0, transformable.getPosition().y);
 }
 
-TEST_F(controllers_movement, move_lateral_right) {
+TEST_F(strick_controllers_movement, move_lateral_right) {
   rpg::window::key_state key_state{
       .position = rpg::window::key_position::pressed,
       .seconds_in_current_position = 0,
@@ -123,7 +129,7 @@ TEST_F(controllers_movement, move_lateral_right) {
   EXPECT_EQ(4.0f, transformable.getPosition().y);
 }
 
-TEST_F(controllers_movement, move_lateral_left) {
+TEST_F(strick_controllers_movement, move_lateral_left) {
   rpg::window::key_state key_state{
       .position = rpg::window::key_position::pressed,
       .seconds_in_current_position = 0,
@@ -150,7 +156,7 @@ TEST_F(controllers_movement, move_lateral_left) {
   EXPECT_EQ(-4.0f, transformable.getPosition().y);
 }
 
-TEST_F(controllers_movement, lateral_movment_takes_precedence) {
+TEST_F(strick_controllers_movement, lateral_movment_takes_precedence) {
   rpg::window::key_state key_state_down{
       .position = rpg::window::key_position::down,
       .seconds_in_current_position = 0,
@@ -208,7 +214,7 @@ TEST_F(controllers_movement, lateral_movment_takes_precedence) {
   EXPECT_EQ(0.0f, transformable.getPosition().y);
 }
 
-TEST_F(controllers_movement, rotate_right) {
+TEST_F(strick_controllers_movement, rotate_right) {
   rpg::window::key_state key_state_down{
       .position = rpg::window::key_position::down,
       .seconds_in_current_position = 0,
@@ -224,12 +230,6 @@ TEST_F(controllers_movement, rotate_right) {
   EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::E))
       .Times(3)
       .WillRepeatedly(::testing::Return(key_state_down));
-  EXPECT_CALL(test_speed, frontal_movement())
-      .Times(1)
-      .WillOnce(::testing::Return(1.0f));
-  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::W))
-      .Times(1)
-      .WillOnce(::testing::Return(key_state_down));
 
   movement_controller.map_action(rpg::action::rotate_right,
                                  sf::Keyboard::Key::E);
@@ -242,10 +242,10 @@ TEST_F(controllers_movement, rotate_right) {
                                  sf::Keyboard::Key::W);
   movement_controller.update(sf::seconds(85.0f));
   EXPECT_EQ(0.0f, transformable.getPosition().x);
-  EXPECT_EQ(85.0f, transformable.getPosition().y);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
 }
 
-TEST_F(controllers_movement, rotate_left) {
+TEST_F(strick_controllers_movement, rotate_left) {
   rpg::window::key_state key_down{
       .position = rpg::window::key_position::down,
       .seconds_in_current_position = 0,
@@ -256,17 +256,11 @@ TEST_F(controllers_movement, rotate_left) {
   EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::Q))
       .Times(4)
       .WillRepeatedly(::testing::Return(key_down));
-  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::W))
-      .Times(1)
-      .WillOnce(::testing::Return(key_down));
   EXPECT_CALL(test_speed, rotational_movement())
       .Times(4)
       .WillOnce(::testing::Return(1.0f))
       .WillOnce(::testing::Return(1.0f))
       .WillOnce(::testing::Return(2.0f))
-      .WillOnce(::testing::Return(1.0f));
-  EXPECT_CALL(test_speed, frontal_movement())
-      .Times(1)
       .WillOnce(::testing::Return(1.0f));
   movement_controller.map_action(rpg::action::rotate_left,
                                  sf::Keyboard::Key::Q);
@@ -281,10 +275,10 @@ TEST_F(controllers_movement, rotate_left) {
                                  sf::Keyboard::Key::W);
   movement_controller.update(sf::seconds(85.0f));
   EXPECT_EQ(0.0f, transformable.getPosition().x);
-  EXPECT_EQ(-85.0f, transformable.getPosition().y);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
 }
 
-TEST_F(controllers_movement, lateral_movement_considers_orientation) {
+TEST_F(strick_controllers_movement, lateral_movement_considers_orientation) {
   rpg::window::key_state key_down{
       .position = rpg::window::key_position::down,
       .seconds_in_current_position = 0,
@@ -314,6 +308,14 @@ TEST_F(controllers_movement, lateral_movement_considers_orientation) {
   movement_controller.map_action(rpg::action::move_right, sf::Keyboard::Key::D);
   movement_controller.update(sf::seconds(1.0f));
   EXPECT_EQ(270.0f, transformable.getRotation());
+  EXPECT_EQ(0.0f, transformable.getPosition().x);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(270.0f, transformable.getRotation());
+  EXPECT_EQ(1.0f, transformable.getPosition().x);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(180.0f, transformable.getRotation());
   EXPECT_EQ(1.0f, transformable.getPosition().x);
   EXPECT_EQ(0.0f, transformable.getPosition().y);
   movement_controller.update(sf::seconds(1.0f));
@@ -322,6 +324,10 @@ TEST_F(controllers_movement, lateral_movement_considers_orientation) {
   EXPECT_EQ(-1.0f, transformable.getPosition().y);
   movement_controller.update(sf::seconds(1.0f));
   EXPECT_EQ(90.0f, transformable.getRotation());
+  EXPECT_EQ(1.0f, transformable.getPosition().x);
+  EXPECT_EQ(-1.0f, transformable.getPosition().y);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(0.0f, transformable.getRotation());
   EXPECT_EQ(0.0f, transformable.getPosition().x);
   EXPECT_EQ(-1.0f, transformable.getPosition().y);
   movement_controller.clear_action(rpg::action::move_right);
@@ -332,104 +338,54 @@ TEST_F(controllers_movement, lateral_movement_considers_orientation) {
   EXPECT_EQ(-2.0f, transformable.getPosition().y);
 }
 
-// TEST_F(controllers_movement, move_lateral_right_accounts_for_orientation) {
-//   EXPECT_CALL(test_speed, rotational_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(90.0f));
-//   EXPECT_CALL(test_speed, lateral_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
+TEST_F(nice_controllers_movement, cannot_move_laterally_if_rotating) {
+  constexpr rpg::window::key_state key_down{
+      .position = rpg::window::key_position::down,
+      .seconds_in_current_position = 0,
+  };
+  constexpr rpg::window::key_state key_up{
+      .position = rpg::window::key_position::up,
+      .seconds_in_current_position = 0,
+  };
 
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(1.0f);
-//   movement_controller.update(delta_time);
-//   EXPECT_EQ(270.0f, transformable.getRotation());
-//   EXPECT_EQ(1.0f, transformable.getPosition().x);
-//   rpg::test::comparision::expect_equal(0.0f, transformable.getPosition().y);
-// }
-
-// TEST_F(controllers_movement, move_lateral_left_accounts_for_orientation) {
-//   EXPECT_CALL(test_speed, rotational_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(90.0f));
-//   EXPECT_CALL(test_speed, lateral_movement())
-//       .Times(1)
-//       .WillOnce(::testing::Return(1.0f));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(true));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(1.0f);
-//   movement_controller.update(delta_time);
-//   EXPECT_EQ(270.0f, transformable.getRotation());
-//   EXPECT_EQ(-1.0f, transformable.getPosition().x);
-//   rpg::test::comparision::expect_equal(0.0f, transformable.getPosition().y);
-// }
-
-// TEST_F(
-//     controllers_movement,
-//     should_not_make_any_calls_when_calling_update_on_detached_movement_controller)
-//     {
-
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::W))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::S))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::D))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::A))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::E))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-//   EXPECT_CALL(test_input, is_key_pressed(sf::Keyboard::Key::Q))
-//       .Times(1)
-//       .WillOnce(::testing::Return(false));
-
-//   movement_controller.attach(transformable);
-//   const auto delta_time = sf::seconds(1.0f);
-//   movement_controller.update(delta_time);
-//   movement_controller.detach();
-//   movement_controller.update(delta_time);
-// }
+  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::Q))
+      .Times(2)
+      .WillOnce(::testing::Return(key_down))
+      .WillOnce(::testing::Return(key_up));
+  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::D))
+      .Times(2)
+      .WillOnce(::testing::Return(key_down))
+      .WillOnce(::testing::Return(key_up));
+  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::E))
+      .Times(2)
+      .WillOnce(::testing::Return(key_up))
+      .WillOnce(::testing::Return(key_down));
+  EXPECT_CALL(test_input, get_key_state(sf::Keyboard::Key::A))
+      .Times(2)
+      .WillOnce(::testing::Return(key_up))
+      .WillOnce(::testing::Return(key_down));
+  EXPECT_CALL(test_speed, rotational_movement())
+      .Times(2)
+      .WillRepeatedly(::testing::Return(1.0f));
+  EXPECT_CALL(test_speed, lateral_movement())
+      .Times(2)
+      .WillRepeatedly(::testing::Return(1.0f));
+  movement_controller.attach(transformable);
+  movement_controller.map_action(rpg::action::rotate_left,
+                                 sf::Keyboard::Key::Q);
+  movement_controller.map_action(rpg::action::rotate_right,
+                                 sf::Keyboard::Key::E);
+  movement_controller.map_action(rpg::action::move_right, sf::Keyboard::Key::D);
+  movement_controller.map_action(rpg::action::move_left, sf::Keyboard::Key::A);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(359.0f, transformable.getRotation());
+  EXPECT_EQ(0.0f, transformable.getPosition().x);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
+  movement_controller.update(sf::seconds(1.0f));
+  EXPECT_EQ(0.0f, transformable.getRotation());
+  EXPECT_EQ(0.0f, transformable.getPosition().x);
+  EXPECT_EQ(0.0f, transformable.getPosition().y);
+}
 
 #if defined(RPG_OS_IS_WINDOWS)
 

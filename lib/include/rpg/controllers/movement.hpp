@@ -71,16 +71,24 @@ public:
     auto &transformable = (*transformable_).get();
     auto &speed = speed_.get();
 
+    bool rotation_movement_performed = false;
+
     if (should_do_action(action::rotate_right)) {
       transformable.rotate(speed.rotational_movement() *
                            delta_time.asSeconds());
       direction_ = math::rotate_vector(transformable.getRotation());
+      rotation_movement_performed = true;
     }
 
     if (should_do_action(action::rotate_left)) {
       transformable.rotate(-speed.rotational_movement() *
                            delta_time.asSeconds());
       direction_ = math::rotate_vector(transformable.getRotation());
+      rotation_movement_performed = true;
+    }
+
+    if (rotation_movement_performed) {
+      return;
     }
 
     bool lateral_movement_performed = false;
@@ -97,6 +105,10 @@ public:
       lateral_movement_performed = true;
     }
 
+    if (lateral_movement_performed) {
+      return;
+    }
+
     if (not lateral_movement_performed and
         should_do_action(action::move_forward)) {
       transformable.move(direction_ * speed.frontal_movement() *
@@ -108,47 +120,6 @@ public:
       transformable.move(direction_ * -speed.backward_movement() *
                          delta_time.asSeconds());
     }
-
-    // if (input.is_key_pressed(sf::Keyboard::Key::E)) {
-    //   const auto rotational_movment_speed =
-    //       speed.rotational_movement() * delta_time.asSeconds();
-    //   transformable.rotate(rotational_movment_speed);
-    //   direction_ = math::rotate_vector(transformable.getRotation());
-    // }
-
-    // if (input.is_key_pressed(sf::Keyboard::Key::Q)) {
-    //   const auto rotational_movment_speed =
-    //       speed.rotational_movement() * delta_time.asSeconds();
-    //   transformable.rotate(-rotational_movment_speed);
-    //   direction_ = math::rotate_vector(transformable.getRotation());
-    // }
-
-    // if (input.is_key_pressed(sf::Keyboard::Key::W)) {
-    //   transformable.move(direction_ * speed.frontal_movement() *
-    //                      delta_time.asSeconds());
-    // }
-
-    // if (input.is_key_pressed(sf::Keyboard::Key::S)) {
-    //   transformable.move(direction_ * -speed.backward_movement() *
-    //                      delta_time.asSeconds());
-    // }
-
-    // if (input.is_key_pressed(sf::Keyboard::Key::D)) {
-    //   const auto movement_speed = direction_.y < 0 ? speed.lateral_movement()
-    //                                                :
-    //                                                -speed.lateral_movement();
-    //   transformable.move(math::ortho(direction_) * movement_speed *
-    //                      delta_time.asSeconds());
-    // }
-
-    // if (input.is_key_pressed(sf::Keyboard::Key::A)) {
-    //   const auto movement_speed = direction_.y < 0 ?
-    //   -speed.lateral_movement()
-    //                                                :
-    //                                                speed.lateral_movement();
-    //   transformable.move(math::ortho(direction_) * movement_speed *
-    //                      delta_time.asSeconds());
-    // }
 
 #if defined(RPG_DEBUG) and not defined(RPG_TESTING)
     ImGui::Begin("Movement");
