@@ -29,7 +29,14 @@ constexpr auto _180_over_pi = 180.0 / std::numbers::pi_v<double>;
   return {snap_to_zero(std::cos(radians)), snap_to_zero(std::sin(radians))};
 }
 
-[[nodiscard]] inline auto ortho(const auto &vector) {
+[[nodiscard]] inline auto left(const auto &vector) {
+  auto result = vector;
+  result.x = vector.y;
+  result.y = -vector.x;
+  return result;
+}
+
+[[nodiscard]] inline auto right(const auto &vector) {
   auto result = vector;
   result.x = -vector.y;
   result.y = vector.x;

@@ -322,14 +322,14 @@ TEST_F(controllers_movement, lateral_movement_considers_orientation) {
   EXPECT_EQ(-1.0f, transformable.getPosition().y);
   movement_controller.update(sf::seconds(1.0f));
   EXPECT_EQ(90.0f, transformable.getRotation());
-  EXPECT_EQ(2.0f, transformable.getPosition().x);
+  EXPECT_EQ(0.0f, transformable.getPosition().x);
   EXPECT_EQ(-1.0f, transformable.getPosition().y);
   movement_controller.clear_action(rpg::action::move_right);
   movement_controller.map_action(rpg::action::move_left, sf::Keyboard::Key::A);
   movement_controller.update(sf::seconds(1.0f));
   EXPECT_EQ(0.0f, transformable.getRotation());
-  EXPECT_EQ(2.0f, transformable.getPosition().x);
-  EXPECT_EQ(0.0f, transformable.getPosition().y);
+  EXPECT_EQ(0.0f, transformable.getPosition().x);
+  EXPECT_EQ(-2.0f, transformable.getPosition().y);
 }
 
 // TEST_F(controllers_movement, move_lateral_right_accounts_for_orientation) {
@@ -431,12 +431,10 @@ TEST_F(controllers_movement, lateral_movement_considers_orientation) {
 //   movement_controller.update(delta_time);
 // }
 
-
 #if defined(RPG_OS_IS_WINDOWS)
 
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
 #endif

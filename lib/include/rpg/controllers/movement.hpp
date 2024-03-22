@@ -86,17 +86,13 @@ public:
     bool lateral_movement_performed = false;
 
     if (should_do_action(action::move_right)) {
-      const auto movement_speed =
-          direction_.y <= std::numeric_limits<float>::epsilon()
-              ? speed.lateral_movement()
-              : -speed.lateral_movement();
-      transformable.move(math::ortho(direction_) * movement_speed *
+      transformable.move(math::right(direction_) * speed.lateral_movement() *
                          delta_time.asSeconds());
       lateral_movement_performed = true;
     }
 
     if (should_do_action(action::move_left)) {
-      transformable.move(math::ortho(direction_) * -speed.lateral_movement() *
+      transformable.move(math::left(direction_) * speed.lateral_movement() *
                          delta_time.asSeconds());
       lateral_movement_performed = true;
     }
