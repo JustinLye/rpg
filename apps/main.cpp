@@ -1,5 +1,6 @@
 #include <rpg/action.hpp>
 #include <rpg/controllers/movement.hpp>
+#include <rpg/texture_paths.hpp>
 #include <rpg/window/input.hpp>
 #include <rpg/window/keyboard_input.hpp>
 
@@ -87,8 +88,9 @@ int main(int argc, char **argv) {
   sf::Clock deltaClock;
   sf::Texture texture;
 
-  if (not texture.loadFromFile("textures/survivor-idle_shotgun_0.png")) {
-    spdlog::error("Failed to load texture");
+  if (not texture.loadFromFile(rpg::texture_paths::survivor_idle_shotgun_0)) {
+    spdlog::error("Failed to load texture: `{}`",
+                  rpg::texture_paths::survivor_idle_shotgun_0);
   }
 
   sf::Sprite sprite(texture);

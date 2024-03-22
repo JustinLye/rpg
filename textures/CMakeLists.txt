@@ -1,0 +1,1 @@
+configure_file(survivor-idle_shotgun_0.png "${CMAKE_BINARY_DIR}/textures/survivor-idle_shotgun_0.png" COPYONLY)
